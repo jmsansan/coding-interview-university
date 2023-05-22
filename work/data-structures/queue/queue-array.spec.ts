@@ -28,6 +28,12 @@ describe("Queue Array", () => {
   describe("full", () => {
     it("should return true when queue is full of elements", () => {
       const queue = new QueueArray();
+      queue.enqueue(1);
+      queue.enqueue(2);
+      queue.enqueue(3);
+      queue.enqueue(4);
+      queue.enqueue(5);
+      queue.enqueue(6);
       expect(queue.full).toBeTruthy();
     });
   });
@@ -62,7 +68,7 @@ describe("Queue Array", () => {
       expect(queue.queue).toEqual([1, 2, 3, 4, 5, 6]);
     });
 
-    it("should 7 be at first position of the array", () => {
+    it("should 7 be at last position of the array", () => {
       const queue = new QueueArray();
 
       queue.enqueue(1);
@@ -71,12 +77,10 @@ describe("Queue Array", () => {
       queue.enqueue(4);
       queue.enqueue(5);
       queue.enqueue(6);
-
       queue.dequeue();
-
       queue.enqueue(7);
 
-      expect(queue.queue).toEqual([7, 2, 3, 4, 5, 6]);
+      expect(queue.queue).toEqual([2, 3, 4, 5, 6, 7]);
     });
 
     it("should all elements be null", () => {
@@ -98,6 +102,47 @@ describe("Queue Array", () => {
       queue.dequeue();
 
       expect(queue.queue).toEqual([null, null, null, null, null, null]);
+    });
+
+    it("should dequeue partially", () => {
+      const queue = new QueueArray();
+      
+      queue.enqueue(1);
+      queue.enqueue(2);
+      queue.enqueue(3);
+      queue.enqueue(4);
+
+      expect(queue.queue).toEqual([1, 2, 3, 4, null, null]);
+
+      queue.dequeue();
+      queue.dequeue();
+
+      expect(queue.queue).toEqual([3, 4, null, null, null, null]);
+
+      queue.enqueue(5);
+
+      expect(queue.queue).toEqual([3, 4, 5, null, null, null]);
+
+      queue.dequeue();
+      queue.dequeue();
+
+      expect(queue.queue).toEqual([5, null, null, null, null, null]);
+
+      queue.dequeue();
+      
+      expect(queue.queue).toEqual([null, null, null, null, null, null]);
+    });
+
+    it("should return value on dequeue", () => {
+      const queue = new QueueArray();
+      
+      queue.enqueue(1);
+      queue.enqueue(2);
+      queue.enqueue(3);
+
+      expect(queue.dequeue()).toBe(1)
+      expect(queue.dequeue()).toBe(2)
+      expect(queue.dequeue()).toBe(3)
     });
   });
 });
